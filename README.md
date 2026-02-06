@@ -1,181 +1,186 @@
-# 📋 San Camilo - Sistema de Gestión de Auditorías
+# San Camilo - Sistema de Gestion de Auditorias
 
-Sistema integral de gestión de auditorías para locales comerciales, desarrollado con React, TypeScript y Supabase.
+Sistema integral de gestion de auditorias para locales comerciales, desarrollado con React, TypeScript y Supabase.
 
-## 🎯 Descripción del Proyecto
+## Descripcion del Proyecto
 
-San Camilo es una plataforma moderna que permite auditar locales comerciales de forma digital, con carga de fotos, tracking de checklist y análisis de datos en tiempo real.
+San Camilo es una plataforma moderna que permite auditar locales comerciales de forma digital, con carga de fotos, tracking de checklist y analisis de datos en tiempo real.
 
-## 🚀 Características Principales
+## Caracteristicas Principales
 
-- ✅ **Autenticación segura** con Supabase
-- - ✅ **Sistema de auditorías** con checklist personalizado
-  - - ✅ **Carga de fotos** durante auditorías
-    - - ✅ **Dashboard** con estadísticas en tiempo real
-      - - ✅ **Reportes** y análisis de tendencias
-        - - ✅ **Gestión de locales** por zona geográfica
-          - - ✅ **Control de acceso** basado en roles (RLS)
-            - - ✅ **Material POP** - Gestión de material publicitario
-             
-              - ## 🛠️ Stack Tecnológico
-             
-              - ### Frontend
-              - - **React 18** - Librería de UI
-                - - **TypeScript** - Tipado estático
-                  - - **Vite** - Build tool ultra rápido
-                    - - **Tailwind CSS** - Utilidades de estilos
-                      - - **Lucide React** - Iconos elegantes
-                       
-                        - ### Backend
-                        - - **Supabase** - PostgreSQL + Auth + Realtime
-                          - - **Row Level Security (RLS)** - Seguridad de datos
-                           
-                            - ## 📁 Estructura del Proyecto
-                           
-                            - ```
-                              san-camilo-audit-system/
-                              ├── src/
-                              │   ├── components/
-                              │   │   ├── Layout.tsx
-                              │   │   ├── Dashboard.tsx
-                              │   │   ├── LoginForm.tsx
-                              │   │   ├── NewAudit.tsx
-                              │   │   ├── AuditHistory.tsx
-                              │   │   ├── Reports.tsx
-                              │   │   └── Stores.tsx
-                              │   ├── contexts/
-                              │   │   └── AuthContext.tsx
-                              │   ├── lib/
-                              │   │   ├── supabase.ts
-                              │   │   └── database.types.ts
-                              │   ├── App.tsx
-                              │   ├── main.tsx
-                              │   └── index.css
-                              ├── package.json
-                              ├── tsconfig.json
-                              ├── vite.config.ts
-                              ├── tailwind.config.js
-                              └── index.html
-                              ```
+- Autenticacion segura con Supabase
+- Sistema de auditorias con checklist personalizado
+- Carga de fotos durante auditorias
+- Dashboard con estadisticas en tiempo real
+- Reportes y analisis de tendencias
+- Gestion de locales por zona geografica
+- Control de acceso basado en roles (RLS)
+- Material POP - Gestion de material publicitario
 
-                              ## 🗄️ Estructura de Base de Datos
+## Stack Tecnologico
 
-                              ### Tablas Principales
-                              - **zones** - Zonas geográficas
-                              - - **stores** - Locales comerciales
-                                - - **user_profiles** - Perfiles y roles de usuarios
-                                  - - **checklist_categories** - Categorías del checklist
-                                    - - **checklist_items** - Items individuales
-                                      - - **audits** - Registros de auditorías
-                                        - - **audit_responses** - Respuestas del checklist
-                                          - - **audit_photos** - Fotos adjuntas
-                                            - - **pop_materials** - Material publicitario disponible
-                                              - - **store_inventory** - Inventario por local
-                                                - - **material_requests** - Solicitudes de material
-                                                 
-                                                  - ## 👥 Roles de Usuario
-                                                 
-                                                  - | Rol | Descripción |
-                                                  - |-----|-------------|
-                                                  - | **admin** | Acceso completo al sistema |
-                                                  - | **supervisor** | Visualiza múltiples locales y reportes |
-                                                  - | **encargada** | Solo ve el local asignado |
-                                                 
-                                                  - ## 🚀 Instalación y Setup
-                                                 
-                                                  - ### Requisitos
-                                                  - - Node.js 18+
-                                                    - - npm o yarn
-                                                      - - Cuenta de Supabase
-                                                       
-                                                        - ### Pasos de Instalación
-                                                       
-                                                        - 1. **Clonar el repositorio**
-                                                          2. ```bash
-                                                             git clone https://github.com/HispanosEmprendedores/san-camilo-audit-system.git
-                                                             cd san-camilo-audit-system
-                                                             ```
+### Frontend
 
-                                                             2. **Instalar dependencias**
-                                                             3. ```bash
-                                                                npm install
-                                                                ```
+- **React 18** - Libreria de UI
+- **TypeScript** - Tipado estatico
+- **Vite** - Build tool ultra rapido
+- **Tailwind CSS** - Utilidades de estilos
+- **Lucide React** - Iconos
+- **React Router** - Navegacion SPA
 
-                                                                3. **Configurar variables de entorno**
-                                                                4. ```bash
-                                                                   cp .env.example .env.local
-                                                                   ```
+### Backend
 
-                                                                   Edita `.env.local` con tus credenciales de Supabase:
-                                                                   ```
-                                                                   VITE_SUPABASE_URL=tu_url_supabase
-                                                                   VITE_SUPABASE_ANON_KEY=tu_anon_key
-                                                                   ```
+- **Supabase** - PostgreSQL + Auth + Realtime
+- **Row Level Security (RLS)** - Seguridad de datos
 
-                                                                   4. **Ejecutar en desarrollo**
-                                                                   5. ```bash
-                                                                      npm run dev
-                                                                      ```
+## Estructura del Proyecto
 
-                                                                      La aplicación estará disponible en `http://localhost:5173`
+```
+san-camilo-audit-system/
+├── src/
+│   ├── components/
+│   │   ├── Layout.tsx
+│   │   ├── Dashboard.tsx
+│   │   ├── LoginForm.tsx
+│   │   ├── NewAudit.tsx
+│   │   ├── AuditHistory.tsx
+│   │   ├── Reports.tsx
+│   │   └── Stores.tsx
+│   ├── contexts/
+│   │   └── AuthContext.tsx
+│   ├── lib/
+│   │   ├── supabase.ts
+│   │   └── database.types.ts
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css
+├── index.html
+├── package.json
+├── tsconfig.json
+├── tsconfig.app.json
+├── vite.config.ts
+├── tailwind.config.js
+├── postcss.config.js
+└── eslint.config.js
+```
 
-                                                                      ## 🏗️ Desarrollo
+## Estructura de Base de Datos
 
-                                                                      ### Scripts Disponibles
+### Tablas Principales
 
-                                                                      ```bash
-                                                                      # Desarrollo
-                                                                      npm run dev
+- **zones** - Zonas geograficas
+- **stores** - Locales comerciales
+- **user_profiles** - Perfiles y roles de usuarios
+- **checklist_categories** - Categorias del checklist
+- **checklist_items** - Items individuales
+- **audits** - Registros de auditorias
+- **audit_responses** - Respuestas del checklist
+- **audit_photos** - Fotos adjuntas
+- **pop_materials** - Material publicitario disponible
+- **store_inventory** - Inventario por local
+- **material_requests** - Solicitudes de material
 
-                                                                      # Build para producción
-                                                                      npm run build
+## Roles de Usuario
 
-                                                                      # Preview del build
-                                                                      npm run preview
+| Rol | Descripcion |
+|-----|-------------|
+| **admin** | Acceso completo al sistema |
+| **supervisor** | Visualiza multiples locales y reportes |
+| **encargada** | Solo ve el local asignado |
 
-                                                                      # Linting
-                                                                      npm run lint
+## Instalacion y Setup
 
-                                                                      # Type checking
-                                                                      npm run typecheck
-                                                                      ```
+### Requisitos
 
-                                                                      ## 📊 Flujo de Auditoría
+- Node.js 18+
+- npm o yarn
+- Cuenta de Supabase
 
-                                                                      1. El usuario (encargada) inicia sesión
-                                                                      2. 2. Selecciona un local para auditar
-                                                                         3. 3. Completa el checklist item por item
-                                                                            4. 4. Carga fotos de evidencia
-                                                                               5. 5. Envía la auditoría
-                                                                                  6. 6. El supervisor puede revisar en el dashboard
-                                                                                    
-                                                                                     7. ## 🔐 Seguridad
-                                                                                    
-                                                                                     8. - **RLS Policies** - Usuarios solo ven sus datos
-                                                                                        - - **JWT** - Autenticación con tokens
-                                                                                          - - **CORS** - Configurado para producción
-                                                                                            - - **Validación** - TypeScript + Supabase types
-                                                                                             
-                                                                                              - ## 📈 Mejoras Futuras
-                                                                                             
-                                                                                              - - [ ] Exportación de reportes a PDF
-                                                                                                - [ ] - [ ] Análisis predictivo de tendencias
-                                                                                                - [ ] - [ ] Integración con Google Maps
-                                                                                                - [ ] - [ ] Notificaciones en tiempo real
-                                                                                                - [ ] - [ ] App móvil nativa
-                                                                                               
-                                                                                                - [ ] ## 🤝 Contribuciones
-                                                                                               
-                                                                                                - [ ] Este es un proyecto en desarrollo. Las contribuciones son bienvenidas.
-                                                                                               
-                                                                                                - [ ] ## 📄 Licencia
-                                                                                               
-                                                                                                - [ ] MIT License
-                                                                                               
-                                                                                                - [ ] ## 👨‍💼 Contacto
-                                                                                               
-                                                                                                - [ ] Para más información, contacta al equipo de desarrollo.
-                                                                                               
-                                                                                                - [ ] ---
-                                                                                               
-                                                                                                - [ ] **Última actualización:** Enero 2026
+### Pasos de Instalacion
+
+1. **Clonar el repositorio**
+
+   ```bash
+   git clone https://github.com/HispanosEmprendedores/san-camilo-audit-system.git
+   cd san-camilo-audit-system
+   ```
+
+2. **Instalar dependencias**
+
+   ```bash
+   npm install
+   ```
+
+3. **Configurar variables de entorno**
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Edita `.env.local` con tus credenciales de Supabase:
+
+   ```
+   VITE_SUPABASE_URL=tu_url_supabase
+   VITE_SUPABASE_ANON_KEY=tu_anon_key
+   ```
+
+4. **Ejecutar en desarrollo**
+
+   ```bash
+   npm run dev
+   ```
+
+   La aplicacion estara disponible en `http://localhost:5173`
+
+## Desarrollo
+
+### Scripts Disponibles
+
+```bash
+# Desarrollo
+npm run dev
+
+# Build para produccion
+npm run build
+
+# Preview del build
+npm run preview
+
+# Linting
+npm run lint
+
+# Type checking
+npm run typecheck
+```
+
+## Flujo de Auditoria
+
+1. El usuario (encargada) inicia sesion
+2. Selecciona un local para auditar
+3. Completa el checklist item por item
+4. Carga fotos de evidencia
+5. Envia la auditoria
+6. El supervisor puede revisar en el dashboard
+
+## Seguridad
+
+- **RLS Policies** - Usuarios solo ven sus datos
+- **JWT** - Autenticacion con tokens
+- **CORS** - Configurado para produccion
+- **Validacion** - TypeScript + Supabase types
+
+## Mejoras Futuras
+
+- [ ] Exportacion de reportes a PDF
+- [ ] Analisis predictivo de tendencias
+- [ ] Integracion con Google Maps
+- [ ] Notificaciones en tiempo real
+- [ ] App movil nativa
+
+## Contribuciones
+
+Este es un proyecto en desarrollo. Las contribuciones son bienvenidas.
+
+## Licencia
+
+MIT License
