@@ -13,8 +13,11 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600" />
+      <div className="flex items-center justify-center min-h-screen bg-slate-50">
+        <div className="text-center">
+          <div className="w-10 h-10 border-[3px] border-slate-200 border-t-brand-600 rounded-full animate-spin mx-auto" />
+          <p className="mt-4 text-sm text-slate-500 font-medium">Cargando...</p>
+        </div>
       </div>
     )
   }
@@ -31,10 +34,19 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="flex items-center justify-center min-h-screen bg-slate-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
-          <p className="mt-4 text-gray-600">Cargando...</p>
+          <div className="flex items-center gap-3 mb-8 justify-center">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-lg">
+              <span className="text-white font-bold text-lg">SC</span>
+            </div>
+            <div className="text-left">
+              <h1 className="text-lg font-bold text-slate-900 tracking-tight">San Camilo</h1>
+              <p className="text-xs text-slate-500">Sistema de Auditorias</p>
+            </div>
+          </div>
+          <div className="w-8 h-8 border-[3px] border-slate-200 border-t-brand-600 rounded-full animate-spin mx-auto" />
+          <p className="mt-4 text-sm text-slate-500 font-medium">Iniciando sesion...</p>
         </div>
       </div>
     )

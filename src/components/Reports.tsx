@@ -96,78 +96,102 @@ export default function Reports() {
   }
 
   function getScoreColor(score: number) {
-    if (score >= 80) return 'text-green-600'
-    if (score >= 60) return 'text-amber-600'
-    return 'text-red-600'
+    if (score >= 80) return 'text-emerald-600 font-bold'
+    if (score >= 60) return 'text-amber-600 font-bold'
+    return 'text-red-600 font-bold'
   }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-600" />
+      <div className="animate-slide-up">
+        <div className="flex items-center gap-3 mb-6">
+          <BarChart3 className="h-7 w-7 text-slate-400" />
+          <div>
+            <div className="h-7 w-40 bg-slate-200 rounded animate-pulse" />
+            <div className="h-4 w-64 bg-slate-100 rounded animate-pulse mt-1.5" />
+          </div>
+        </div>
+        <div className="card overflow-hidden">
+          <div className="bg-slate-50/80 border-b border-slate-200 px-6 py-3.5">
+            <div className="h-3 w-full bg-slate-100 rounded animate-pulse" />
+          </div>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="px-6 py-4 border-b border-slate-100 flex items-center gap-6">
+              <div className="h-4 w-36 bg-slate-100 rounded animate-pulse" />
+              <div className="h-4 w-16 bg-slate-100 rounded animate-pulse ml-auto" />
+              <div className="h-4 w-20 bg-slate-100 rounded animate-pulse" />
+              <div className="h-4 w-10 bg-slate-100 rounded animate-pulse" />
+              <div className="h-4 w-28 bg-slate-100 rounded animate-pulse" />
+            </div>
+          ))}
+        </div>
       </div>
     )
   }
 
   return (
-    <div>
+    <div className="animate-slide-up">
       <div className="flex items-center gap-3 mb-6">
-        <BarChart3 className="h-7 w-7 text-primary-600" />
-        <h1 className="text-2xl font-bold text-gray-900">Reportes</h1>
+        <BarChart3 className="h-7 w-7 text-slate-400" />
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Reportes</h1>
+          <p className="text-[15px] text-slate-500">Resumen de rendimiento por local</p>
+        </div>
       </div>
 
       {reports.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-xl shadow-sm border">
-          <p className="text-gray-500">No hay datos de auditorías para mostrar</p>
+        <div className="card overflow-hidden flex flex-col items-center justify-center py-20">
+          <BarChart3 size={48} className="text-slate-300" />
+          <p className="text-[15px] text-slate-500 mt-4">No hay datos de auditorías para mostrar</p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+        <div className="card overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="bg-gray-50 border-b">
-                <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <tr className="bg-slate-50/80 border-b border-slate-200">
+                <th className="text-left px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
                   Local
                 </th>
-                <th className="text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-center px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
                   Auditorías
                 </th>
-                <th className="text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-center px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
                   Puntaje Promedio
                 </th>
-                <th className="text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-center px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
                   Tendencia
                 </th>
-                <th className="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-right px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
                   Última Auditoría
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-slate-100">
               {reports.map((report) => (
-                <tr key={report.storeId} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 font-medium text-gray-900">
+                <tr key={report.storeId} className="hover:bg-slate-50/50 transition-colors">
+                  <td className="px-6 py-4 text-[13px] font-medium text-slate-900">
                     {report.storeName}
                   </td>
-                  <td className="px-6 py-4 text-center text-gray-600">
+                  <td className="px-6 py-4 text-center text-[13px] text-slate-500">
                     {report.totalAudits}
                   </td>
-                  <td className="px-6 py-4 text-center">
-                    <span className={`font-bold ${getScoreColor(report.averageScore)}`}>
+                  <td className="px-6 py-4 text-center text-[13px]">
+                    <span className={getScoreColor(report.averageScore)}>
                       {report.averageScore}%
                     </span>
                   </td>
                   <td className="px-6 py-4 text-center">
                     {report.trend === 'up' && (
-                      <TrendingUp className="h-5 w-5 text-green-500 mx-auto" />
+                      <TrendingUp className="h-5 w-5 text-emerald-500 mx-auto" />
                     )}
                     {report.trend === 'down' && (
                       <TrendingDown className="h-5 w-5 text-red-500 mx-auto" />
                     )}
                     {report.trend === 'stable' && (
-                      <span className="text-gray-400 text-sm">--</span>
+                      <span className="text-slate-300 text-[13px]">--</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-right text-sm text-gray-500">
+                  <td className="px-6 py-4 text-right text-[13px] text-slate-500">
                     {report.lastAuditDate
                       ? new Date(report.lastAuditDate).toLocaleDateString('es-ES', {
                           year: 'numeric',

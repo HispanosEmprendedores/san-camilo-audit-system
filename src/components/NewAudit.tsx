@@ -157,22 +157,46 @@ export default function NewAudit() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-600" />
+      <div className="max-w-3xl mx-auto space-y-6">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="skeleton h-7 w-7 rounded-lg" />
+          <div className="skeleton h-8 w-56" />
+        </div>
+        <div className="card p-6 space-y-4">
+          <div className="skeleton h-4 w-32" />
+          <div className="skeleton h-11 w-full rounded-lg" />
+        </div>
+        <div className="card p-6 space-y-4">
+          <div className="skeleton h-5 w-48" />
+          <div className="skeleton h-4 w-full" />
+          <div className="skeleton h-4 w-full" />
+          <div className="skeleton h-4 w-3/4" />
+        </div>
+        <div className="card p-6 space-y-4">
+          <div className="skeleton h-5 w-48" />
+          <div className="skeleton h-4 w-full" />
+          <div className="skeleton h-4 w-full" />
+        </div>
       </div>
     )
   }
 
   if (success) {
     return (
-      <div className="max-w-lg mx-auto mt-12 text-center">
-        <div className="bg-green-50 rounded-2xl p-8">
-          <Check className="h-16 w-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Auditoría Enviada</h2>
-          <p className="text-gray-600 mb-6">La auditoría se registró correctamente.</p>
+      <div className="max-w-lg mx-auto mt-12 animate-slide-up">
+        <div className="card bg-gradient-to-br from-brand-500 to-brand-700 p-10 text-center">
+          <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-white/20 backdrop-blur-sm mx-auto mb-5">
+            <Check className="h-8 w-8 text-white" />
+          </div>
+          <h2 className="text-2xl font-bold tracking-tight text-white mb-2">
+            Auditoría Enviada
+          </h2>
+          <p className="text-[15px] text-white/80 mb-8">
+            La auditoría se registró correctamente.
+          </p>
           <button
             onClick={() => setSuccess(false)}
-            className="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2.5 px-6 rounded-lg transition-colors"
+            className="inline-flex items-center justify-center gap-2 bg-white text-brand-700 font-semibold py-2.5 px-6 rounded-lg hover:bg-white/90 transition-all duration-200"
           >
             Nueva Auditoría
           </button>
@@ -183,21 +207,31 @@ export default function NewAudit() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="flex items-center gap-3 mb-6">
-        <ClipboardPlus className="h-7 w-7 text-primary-600" />
-        <h1 className="text-2xl font-bold text-gray-900">Nueva Auditoría</h1>
+      <div className="flex items-center gap-3 mb-8 animate-slide-up">
+        <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-brand-50">
+          <ClipboardPlus className="h-5 w-5 text-brand-600" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            Nueva Auditoría
+          </h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">
+            Complete el checklist para registrar la auditoría
+          </p>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white rounded-xl shadow-sm border p-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Store Selection */}
+        <div className="card p-6 animate-slide-up" style={{ animationDelay: '50ms' }}>
+          <label className="block text-[13px] font-semibold text-slate-700 mb-2">
             Seleccionar Local
           </label>
           <select
             value={selectedStore}
             onChange={(e) => setSelectedStore(e.target.value)}
             required
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+            className="input-field"
           >
             <option value="">-- Selecciona un local --</option>
             {stores.map((store) => (
@@ -208,61 +242,110 @@ export default function NewAudit() {
           </select>
         </div>
 
-        {categories.map((category) => (
-          <div key={category.id} className="bg-white rounded-xl shadow-sm border p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">{category.name}</h3>
-            <div className="space-y-4">
+        {/* Checklist Categories */}
+        {categories.map((category, catIdx) => (
+          <div
+            key={category.id}
+            className="card p-6 animate-slide-up"
+            style={{ animationDelay: `${(catIdx + 1) * 75 + 50}ms` }}
+          >
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-[15px] font-semibold text-slate-900 tracking-tight">
+                {category.name}
+              </h3>
+              <span className="badge bg-slate-100 text-slate-500">
+                {(category.items ?? []).length} items
+              </span>
+            </div>
+            <div className="space-y-0">
               {(category.items ?? [])
                 .sort((a: ChecklistItem, b: ChecklistItem) => a.order_index - b.order_index)
-                .map((item: ChecklistItem) => (
-                  <div key={item.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
-                    <div className="flex items-start justify-between gap-4">
-                      <p className="text-sm text-gray-700 flex-1">{item.description}</p>
-                      <div className="flex gap-2 shrink-0">
-                        <button
-                          type="button"
-                          onClick={() => handleResponse(item.id, true)}
-                          className={`p-2 rounded-lg transition-colors ${
-                            responses[item.id]?.compliant === true
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-gray-100 text-gray-400 hover:bg-green-50'
-                          }`}
-                        >
-                          <Check size={18} />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleResponse(item.id, false)}
-                          className={`p-2 rounded-lg transition-colors ${
-                            responses[item.id]?.compliant === false
-                              ? 'bg-red-100 text-red-700'
-                              : 'bg-gray-100 text-gray-400 hover:bg-red-50'
-                          }`}
-                        >
-                          <X size={18} />
-                        </button>
+                .map((item: ChecklistItem, itemIdx: number) => {
+                  const isCompliant = responses[item.id]?.compliant
+                  return (
+                    <div
+                      key={item.id}
+                      className={`py-3.5 ${
+                        itemIdx < (category.items ?? []).length - 1
+                          ? 'border-b border-slate-100'
+                          : ''
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <p className="text-[15px] text-slate-700 flex-1 leading-relaxed">
+                          {item.description}
+                        </p>
+                        <div className="flex gap-1.5 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => handleResponse(item.id, true)}
+                            className={`p-2 rounded-lg transition-all duration-200 ${
+                              isCompliant === true
+                                ? 'bg-emerald-100 text-emerald-700 ring-2 ring-emerald-200'
+                                : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
+                            }`}
+                          >
+                            <Check size={18} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleResponse(item.id, false)}
+                            className={`p-2 rounded-lg transition-all duration-200 ${
+                              isCompliant === false
+                                ? 'bg-red-100 text-red-700 ring-2 ring-red-200'
+                                : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
+                            }`}
+                          >
+                            <X size={18} />
+                          </button>
+                        </div>
                       </div>
+                      {isCompliant === false && (
+                        <div className="mt-2.5 animate-slide-up">
+                          <textarea
+                            placeholder="Observación (opcional)"
+                            value={responses[item.id]?.observation ?? ''}
+                            onChange={(e) => handleObservation(item.id, e.target.value)}
+                            className="input-field text-[13px]"
+                            rows={2}
+                          />
+                        </div>
+                      )}
+                      {isCompliant === true && (
+                        <div className="mt-1.5">
+                          <span className="badge bg-emerald-50 text-emerald-600">Cumple</span>
+                        </div>
+                      )}
+                      {isCompliant === false && (
+                        <div className="mt-1.5">
+                          <span className="badge bg-amber-50 text-amber-600">No cumple</span>
+                        </div>
+                      )}
                     </div>
-                    {responses[item.id]?.compliant === false && (
-                      <textarea
-                        placeholder="Observación (opcional)"
-                        value={responses[item.id]?.observation ?? ''}
-                        onChange={(e) => handleObservation(item.id, e.target.value)}
-                        className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
-                        rows={2}
-                      />
-                    )}
-                  </div>
-                ))}
+                  )
+                })}
             </div>
           </div>
         ))}
 
-        <div className="bg-white rounded-xl shadow-sm border p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Evidencia Fotográfica</h3>
-          <label className="flex items-center gap-2 cursor-pointer bg-gray-50 hover:bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-6 transition-colors justify-center">
-            <Camera className="h-6 w-6 text-gray-400" />
-            <span className="text-sm text-gray-500">Agregar fotos</span>
+        {/* Photo Evidence */}
+        <div
+          className="card p-6 animate-slide-up"
+          style={{ animationDelay: `${(categories.length + 1) * 75 + 50}ms` }}
+        >
+          <h3 className="text-[15px] font-semibold text-slate-900 tracking-tight mb-4">
+            Evidencia Fotográfica
+          </h3>
+          <label className="flex flex-col items-center gap-2 cursor-pointer bg-slate-50 hover:bg-slate-100 border-2 border-dashed border-slate-200 rounded-xl p-8 transition-all duration-200 justify-center group">
+            <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-white shadow-sm border border-slate-200/80 group-hover:scale-105 transition-transform duration-200">
+              <Camera className="h-5 w-5 text-slate-400" />
+            </div>
+            <span className="text-[13px] text-slate-500 font-medium mt-1">
+              Agregar fotos
+            </span>
+            <span className="text-[13px] text-slate-400">
+              Haga clic o arrastre archivos aquí
+            </span>
             <input
               type="file"
               accept="image/*"
@@ -272,18 +355,19 @@ export default function NewAudit() {
             />
           </label>
           {photos.length > 0 && (
-            <div className="mt-4 grid grid-cols-3 gap-3">
+            <div className="mt-5 grid grid-cols-3 gap-3">
               {photos.map((photo, i) => (
-                <div key={i} className="relative group">
+                <div key={i} className="relative group rounded-xl overflow-hidden">
                   <img
                     src={URL.createObjectURL(photo)}
                     alt={`Foto ${i + 1}`}
-                    className="w-full h-24 object-cover rounded-lg"
+                    className="w-full h-28 object-cover rounded-xl"
                   />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 rounded-xl" />
                   <button
                     type="button"
                     onClick={() => removePhoto(i)}
-                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute top-2 right-2 flex items-center justify-center h-7 w-7 bg-white/90 backdrop-blur-sm text-red-600 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white shadow-sm"
                   >
                     <X size={14} />
                   </button>
@@ -293,33 +377,46 @@ export default function NewAudit() {
           )}
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border p-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        {/* Additional Notes */}
+        <div
+          className="card p-6 animate-slide-up"
+          style={{ animationDelay: `${(categories.length + 2) * 75 + 50}ms` }}
+        >
+          <label className="block text-[13px] font-semibold text-slate-700 mb-2">
             Notas Adicionales
           </label>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+            className="input-field"
             rows={3}
             placeholder="Observaciones generales de la auditoría..."
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={submitting || !selectedStore}
-          className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        {/* Submit Button */}
+        <div
+          className="animate-slide-up"
+          style={{ animationDelay: `${(categories.length + 3) * 75 + 50}ms` }}
         >
-          {submitting ? (
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-          ) : (
-            <>
-              <Send size={20} />
-              Enviar Auditoría
-            </>
-          )}
-        </button>
+          <button
+            type="submit"
+            disabled={submitting || !selectedStore}
+            className="btn-primary w-full flex items-center justify-center gap-2.5 py-3.5 text-[15px] rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {submitting ? (
+              <div className="flex items-center gap-2.5">
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/30 border-t-white" />
+                <span>Enviando...</span>
+              </div>
+            ) : (
+              <>
+                <Send size={18} />
+                Enviar Auditoría
+              </>
+            )}
+          </button>
+        </div>
       </form>
     </div>
   )
