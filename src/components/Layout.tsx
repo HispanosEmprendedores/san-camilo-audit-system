@@ -6,13 +6,14 @@ import {
   History,
   BarChart3,
   Store,
+  Users,
   LogOut,
   Menu,
   X,
-  Bell,
   ChevronRight,
 } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
+import NotificationDropdown from './NotificationDropdown'
 
 const navigation = [
   { name: 'Dashboard', to: '/', icon: LayoutDashboard },
@@ -20,6 +21,7 @@ const navigation = [
   { name: 'Historial', to: '/historial', icon: History },
   { name: 'Reportes', to: '/reportes', icon: BarChart3 },
   { name: 'Locales', to: '/locales', icon: Store },
+  { name: 'Usuarios', to: '/usuarios', icon: Users, adminOnly: true },
 ]
 
 const pageNames: Record<string, string> = {
@@ -28,6 +30,7 @@ const pageNames: Record<string, string> = {
   '/historial': 'Historial de Auditorias',
   '/reportes': 'Reportes y Analisis',
   '/locales': 'Gestion de Locales',
+  '/usuarios': 'Gestion de Usuarios',
 }
 
 export default function Layout() {
@@ -90,7 +93,7 @@ export default function Layout() {
           <p className="px-3 mb-3 text-[11px] font-semibold text-slate-500 uppercase tracking-widest">
             Menu principal
           </p>
-          {navigation.map((item) => (
+          {navigation.filter((item) => !('adminOnly' in item && item.adminOnly) || profile?.role === 'admin').map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -164,10 +167,7 @@ export default function Layout() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button className="relative p-2.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
-                <Bell size={20} />
-                <span className="absolute top-2 right-2 w-2 h-2 bg-brand-500 rounded-full ring-2 ring-white" />
-              </button>
+              <NotificationDropdown />
               <div className="hidden sm:flex items-center gap-3 ml-2 pl-4 border-l border-slate-200">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center">
                   <span className="text-[11px] font-bold text-white">{initials}</span>

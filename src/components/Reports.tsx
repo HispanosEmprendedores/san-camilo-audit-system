@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
-import { BarChart3, TrendingUp, TrendingDown } from 'lucide-react'
+import { BarChart3, TrendingUp, TrendingDown, FileDown } from 'lucide-react'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import { supabase } from '../lib/supabase'
 import type { Audit } from '../lib/database.types'
 
@@ -101,6 +103,71 @@ export default function Reports() {
     return 'text-red-600 font-bold'
   }
 
+  function exportPDF() {
+    const doc = new jsPDF()
+
+    // Header
+    doc.setFontSize(20)
+    doc.setTextColor(30, 41, 59) // slate-800
+    doc.text('San Camilo - Reporte de Auditorias', 14, 22)
+
+    doc.setFontSize(10)
+    doc.setTextColor(100, 116, 139) // slate-500
+    doc.text(`Generado: ${new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}`, 14, 30)
+
+    // Line separator
+    doc.setDrawColor(226, 232, 240) // slate-200
+    doc.line(14, 34, 196, 34)
+
+    // Table
+    autoTable(doc, {
+      startY: 40,
+      head: [['Local', 'Auditorias', 'Puntaje Promedio', 'Tendencia', 'Ultima Auditoria']],
+      body: reports.map((r) => [
+        r.storeName,
+        String(r.totalAudits),
+        `${r.averageScore}%`,
+        r.trend === 'up' ? 'Mejorando' : r.trend === 'down' ? 'Bajando' : 'Estable',
+        r.lastAuditDate
+          ? new Date(r.lastAuditDate).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' })
+          : '-',
+      ]),
+      headStyles: {
+        fillColor: [67, 73, 230], // brand-600
+        textColor: 255,
+        fontSize: 9,
+        fontStyle: 'bold',
+      },
+      bodyStyles: {
+        fontSize: 9,
+        textColor: [51, 65, 85], // slate-700
+      },
+      alternateRowStyles: {
+        fillColor: [248, 250, 252], // slate-50
+      },
+      styles: {
+        cellPadding: 4,
+        lineColor: [226, 232, 240],
+        lineWidth: 0.1,
+      },
+    })
+
+    // Footer
+    const pageCount = doc.getNumberOfPages()
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i)
+      doc.setFontSize(8)
+      doc.setTextColor(148, 163, 184) // slate-400
+      doc.text(
+        `San Camilo - Sistema de Auditorias | Pagina ${i} de ${pageCount}`,
+        14,
+        doc.internal.pageSize.height - 10
+      )
+    }
+
+    doc.save(`reporte-auditorias-${new Date().toISOString().split('T')[0]}.pdf`)
+  }
+
   if (loading) {
     return (
       <div className="animate-slide-up">
@@ -131,12 +198,22 @@ export default function Reports() {
 
   return (
     <div className="animate-slide-up">
-      <div className="flex items-center gap-3 mb-6">
-        <BarChart3 className="h-7 w-7 text-slate-400" />
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Reportes</h1>
-          <p className="text-[15px] text-slate-500">Resumen de rendimiento por local</p>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <BarChart3 className="h-7 w-7 text-slate-400" />
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Reportes</h1>
+            <p className="text-[15px] text-slate-500">Resumen de rendimiento por local</p>
+          </div>
         </div>
+        <button
+          onClick={exportPDF}
+          disabled={reports.length === 0}
+          className="btn-primary text-[13px] py-2 px-4"
+        >
+          <FileDown size={16} />
+          Exportar PDF
+        </button>
       </div>
 
       {reports.length === 0 ? (

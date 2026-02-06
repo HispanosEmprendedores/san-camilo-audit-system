@@ -7,6 +7,7 @@ import NewAudit from './components/NewAudit'
 import AuditHistory from './components/AuditHistory'
 import Reports from './components/Reports'
 import Stores from './components/Stores'
+import UserManagement from './components/UserManagement'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
@@ -71,6 +72,7 @@ export default function App() {
         <Route path="historial" element={<AuditHistory />} />
         <Route path="reportes" element={<Reports />} />
         <Route path="locales" element={<Stores />} />
+        <Route path="usuarios" element={<UserManagement />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
